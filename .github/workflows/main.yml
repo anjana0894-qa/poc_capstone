@@ -12,12 +12,11 @@ permissions:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
 
     steps:
 
-      - name: Checkout code
+      - name: Checkout main branch
         uses: actions/checkout@v4
 
       - name: Setup Node.js
@@ -35,24 +34,30 @@ jobs:
       - name: Run Playwright tests
         id: tests
         continue-on-error: true
+        env:
+          SMARTERP_USERNAME: ${{ secrets.SMARTERP_USERNAME }}
+          SMARTERP_PASSWORD: ${{ secrets.SMARTERP_PASSWORD }}
         run: npx playwright test
 
       - name: Publish Playwright report
         if: always()
+        uses: actions/checkout@v4
+        with:
+          ref: qa-dashboard
+          path: qa-dashboard
+
+      - name: Copy report to qa-dashboard
+        if: always()
         run: |
-
-          git fetch origin qa-dashboard
-
-          git worktree add qa-dashboard origin/qa-dashboard
-
           rm -rf qa-dashboard/reports/playwright
-
           mkdir -p qa-dashboard/reports/playwright
 
           cp -r playwright-report/. qa-dashboard/reports/playwright/
 
-          cd qa-dashboard
-
+      - name: Commit and push Playwright report
+        if: always()
+        working-directory: qa-dashboard
+        run: |
           git config user.name "QA Reports Publisher"
           git config user.email "qa-reports-publisher@users.noreply.github.com"
 
