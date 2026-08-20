@@ -1,0 +1,27 @@
+{
+  "lastRun": "2026-08-20T11:38:43.531Z",
+  "totalModules": 2,
+  "passedModules": 2,
+  "failedModules": 0,
+  "totalTests": 2,
+  "passedTests": 2,
+  "failedTests": 0,
+  "modules": [
+    {
+      "name": "Form",
+      "spec": "form.spec.js",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "status": "passed"
+    },
+    {
+      "name": "Login",
+      "spec": "login.spec.js",
+      "total": 1,
+      "passed": 1,
+      "failed": 0,
+      "status": "passed"
+    }
+  ]
+}
