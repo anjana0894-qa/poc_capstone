@@ -1,0 +1,8 @@
+{
+    "name": "Anjana",
+    "email": "anjana.test@example.com",
+    "password": "Test@12345",
+    "gender": "Female",
+    "employmentStatus": "Employed",
+    "dateOfBirth": "2021-08-20"
+}
