@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>QA Automation Dashboard</title>
 
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -14,9 +19,22 @@
     <div class="container">
 
         <header>
+
             <h1>QA Automation Dashboard</h1>
+
             <p>Playwright Test Execution</p>
+
             <p id="lastRun"></p>
+
+            <div class="report-link">
+                <a
+                    href="playwright-report/index.html"
+                    target="_blank"
+                >
+                    View Playwright Report
+                </a>
+            </div>
+
         </header>
 
 
@@ -25,18 +43,35 @@
         <section class="summary">
 
             <div class="card">
+
                 <h3>Total Modules</h3>
-                <div id="totalModules">0</div>
+
+                <div id="totalModules">
+                    0
+                </div>
+
             </div>
 
+
             <div class="card">
+
                 <h3>Passed</h3>
-                <div id="passedModules">0</div>
+
+                <div id="passedModules">
+                    0
+                </div>
+
             </div>
 
+
             <div class="card">
+
                 <h3>Failed</h3>
-                <div id="failedModules">0</div>
+
+                <div id="failedModules">
+                    0
+                </div>
+
             </div>
 
         </section>
@@ -51,15 +86,18 @@
             <table>
 
                 <thead>
+
                     <tr>
                         <th>Module</th>
                         <th>Spec File</th>
+                        <th>Tests</th>
                         <th>Passed</th>
                         <th>Failed</th>
                         <th>Status</th>
-                        <th>Report</th>
                     </tr>
+
                 </thead>
+
 
                 <tbody id="moduleTable">
                 </tbody>
@@ -74,4 +112,5 @@
     <script src="dashboard.js"></script>
 
 </body>
+
 </html>

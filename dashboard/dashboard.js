@@ -1,58 +1,84 @@
 async function loadDashboard() {
-  const response = await fetch("dashboard-data.json");
 
-  const data = await response.json();
+    const response = await fetch('dashboard-data.json');
 
-  // Summary
+    const data = await response.json();
 
-  document.getElementById("totalModules").textContent = data.totalModules;
 
-  document.getElementById("passedModules").textContent = data.passedModules;
+    // Summary
 
-  document.getElementById("failedModules").textContent = data.failedModules;
+    document.getElementById('totalModules').textContent =
+        data.totalModules;
 
-  // Last run
+    document.getElementById('passedModules').textContent =
+        data.passedModules;
 
-  const lastRun = new Date(data.lastRun);
+    document.getElementById('failedModules').textContent =
+        data.failedModules;
 
-  document.getElementById("lastRun").textContent =
-    `Last Run: ${lastRun.toLocaleString()}`;
 
-  // Module table
+    // Last run
 
-  const table = document.getElementById("moduleTable");
+    const lastRun = new Date(data.lastRun);
 
-  table.innerHTML = "";
+    document.getElementById('lastRun').textContent =
+        `Last Run: ${lastRun.toLocaleString()}`;
 
-  data.modules.forEach((module) => {
-    const row = document.createElement("tr");
 
-    const statusClass = module.status === "passed" ? "passed" : "failed";
+    // Module table
 
-    row.innerHTML = `
-            <td>${module.name}</td>
+    const table = document.getElementById('moduleTable');
 
-            <td>${module.spec}</td>
+    table.innerHTML = '';
 
-            <td>${module.passed}</td>
 
-            <td>${module.failed}</td>
+    data.modules.forEach(module => {
 
-           <td>
-    <span class="status ${statusClass}">
-        ${module.status.toUpperCase()}
-    </span>
-</td>
+        const row = document.createElement('tr');
 
-<td>
-    <a href="${module.report}" target="_blank">
-        View Report
-    </a>
-</td>
+
+        const statusClass =
+            module.status === 'passed'
+                ? 'passed'
+                : 'failed';
+
+
+        row.innerHTML = `
+
+            <td>
+                ${module.name}
+            </td>
+
+            <td>
+                ${module.spec}
+            </td>
+
+            <td>
+                ${module.total}
+            </td>
+
+            <td>
+                ${module.passed}
+            </td>
+
+            <td>
+                ${module.failed}
+            </td>
+
+            <td>
+                <span class="status ${statusClass}">
+                    ${module.status.toUpperCase()}
+                </span>
+            </td>
+
         `;
 
-    table.appendChild(row);
-  });
+
+        table.appendChild(row);
+
+    });
+
 }
+
 
 loadDashboard();

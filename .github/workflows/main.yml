@@ -16,7 +16,7 @@ jobs:
 
     steps:
 
-      # 1. Checkout the main project
+      # 1. Checkout main branch
       - name: Checkout main branch
         uses: actions/checkout@v4
 
@@ -35,7 +35,7 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      # 5. Run ALL Playwright tests
+      # 5. Run ALL Playwright tests ONCE
       - name: Run Playwright tests
         id: tests
         continue-on-error: true
@@ -44,17 +44,12 @@ jobs:
           SMARTERP_PASSWORD: ${{ secrets.SMARTERP_PASSWORD }}
         run: npx playwright test
 
-      # 6. Generate dashboard data
+      # 6. Generate dashboard data from results.json
       - name: Generate dashboard data
         if: always()
         run: node dashboard/generateDashboard.js
 
-      # 7. Generate individual module reports
-      - name: Generate module reports
-        if: always()
-        run: node dashboard/generateModuleReports.js
-
-      # 8. Checkout qa-dashboard branch
+      # 7. Checkout qa-dashboard branch
       - name: Checkout qa-dashboard branch
         if: always()
         uses: actions/checkout@v4
@@ -62,7 +57,7 @@ jobs:
           ref: qa-dashboard
           path: qa-dashboard
 
-      # 9. Prepare GitHub Pages folder
+      # 8. Prepare GitHub Pages dashboard
       - name: Prepare dashboard
         if: always()
         run: |
@@ -71,13 +66,12 @@ jobs:
 
           cp dashboard/index.html qa-dashboard/docs/
           cp dashboard/dashboard.js qa-dashboard/docs/
-          cp dashboard/styles.css qa-dashboard/docs/
+          cp dashboard/style.css qa-dashboard/docs/
           cp dashboard/dashboard-data.json qa-dashboard/docs/
 
-          mkdir -p qa-dashboard/docs/reports
-          cp -r dashboard/reports/. qa-dashboard/docs/reports/
+          cp -r playwright-report qa-dashboard/docs/
 
-      # 10. Commit dashboard to qa-dashboard
+      # 9. Publish dashboard
       - name: Publish QA Dashboard
         if: always()
         working-directory: qa-dashboard
@@ -94,7 +88,7 @@ jobs:
             git push origin HEAD:qa-dashboard
           fi
 
-      # 11. Upload report as GitHub Actions artifact
+      # 10. Upload Playwright report as workflow artifact
       - name: Upload Playwright Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -102,7 +96,7 @@ jobs:
           name: playwright-report
           path: playwright-report/
 
-      # 12. Fail workflow if tests failed
+      # 11. Fail workflow if tests failed
       - name: Fail workflow if tests failed
         if: steps.tests.outcome == 'failure'
         run: exit 1
