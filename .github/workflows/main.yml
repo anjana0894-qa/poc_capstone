@@ -5,13 +5,15 @@ on:
     branches:
       - main
 
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
 jobs:
   test:
-    runs-on: ubuntu-latest
 
-    env:
-      SMARTERP_USERNAME: ${{ secrets.SMARTERP_USERNAME }}
-      SMARTERP_PASSWORD: ${{ secrets.SMARTERP_PASSWORD }}
+    runs-on: ubuntu-latest
 
     steps:
 
@@ -31,7 +33,37 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run Playwright tests
+        id: tests
+        continue-on-error: true
         run: npx playwright test
+
+      - name: Publish Playwright report
+        if: always()
+        run: |
+
+          git fetch origin qa-dashboard
+
+          git worktree add qa-dashboard origin/qa-dashboard
+
+          rm -rf qa-dashboard/reports/playwright
+
+          mkdir -p qa-dashboard/reports/playwright
+
+          cp -r playwright-report/. qa-dashboard/reports/playwright/
+
+          cd qa-dashboard
+
+          git config user.name "QA Reports Publisher"
+          git config user.email "qa-reports-publisher@users.noreply.github.com"
+
+          git add reports/playwright
+
+          if git diff --cached --quiet; then
+            echo "No report changes to commit"
+          else
+            git commit -m "Publish Playwright test report"
+            git push origin HEAD:qa-dashboard
+          fi
 
       - name: Upload Playwright Report
         if: always()
@@ -39,3 +71,7 @@ jobs:
         with:
           name: playwright-report
           path: playwright-report/
+
+      - name: Fail workflow if tests failed
+        if: steps.tests.outcome == 'failure'
+        run: exit 1
