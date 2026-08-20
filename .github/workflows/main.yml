@@ -39,20 +39,20 @@ jobs:
           SMARTERP_PASSWORD: ${{ secrets.SMARTERP_PASSWORD }}
         run: npx playwright test
 
-      - name: Publish Playwright report
+      - name: Checkout qa-dashboard branch
         if: always()
         uses: actions/checkout@v4
         with:
           ref: qa-dashboard
           path: qa-dashboard
 
-      - name: Copy report to qa-dashboard
+      - name: Copy Playwright report
         if: always()
         run: |
-          rm -rf qa-dashboard/reports/playwright
-          mkdir -p qa-dashboard/reports/playwright
+          rm -rf qa-dashboard/docs
+          mkdir -p qa-dashboard/docs
 
-          cp -r playwright-report/. qa-dashboard/reports/playwright/
+          cp -r playwright-report/. qa-dashboard/docs/
 
       - name: Commit and push Playwright report
         if: always()
@@ -61,7 +61,7 @@ jobs:
           git config user.name "QA Reports Publisher"
           git config user.email "qa-reports-publisher@users.noreply.github.com"
 
-          git add reports/playwright
+          git add docs
 
           if git diff --cached --quiet; then
             echo "No report changes to commit"
