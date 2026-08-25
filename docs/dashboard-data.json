@@ -1,11 +1,11 @@
 {
-  "lastRun": "2026-08-25T09:49:37.331Z",
+  "lastRun": "2026-08-25T13:28:41.179Z",
   "totalModules": 2,
-  "passedModules": 2,
-  "failedModules": 0,
+  "passedModules": 1,
+  "failedModules": 1,
   "totalTests": 2,
-  "passedTests": 2,
-  "failedTests": 0,
+  "passedTests": 1,
+  "failedTests": 1,
   "modules": [
     {
       "name": "Form",
@@ -19,9 +19,9 @@
       "name": "Login",
       "spec": "login.spec.js",
       "total": 1,
-      "passed": 1,
-      "failed": 0,
-      "status": "passed"
+      "passed": 0,
+      "failed": 1,
+      "status": "failed"
     }
   ]
 }
