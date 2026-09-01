@@ -1,6 +1,6 @@
 async function loadDashboard() {
 
-    const response = await fetch('dashboard-data.json');
+    const response = await fetch(`dashboard-data.json?v=${Date.now()}`);
 
     const data = await response.json();
 
