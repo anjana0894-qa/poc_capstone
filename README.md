@@ -11,7 +11,7 @@ Test Results + HTML Report
       ↓
 Dynamic QA Dashboard
       ↓
-GitHub Pages...
+GitHub Pages....
 ```
 
 ### What it includes
